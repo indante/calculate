@@ -4,7 +4,9 @@ export function infixToPostfix(expression: string) {
   const result: string[] = [];
   const operatorStack: string[] = [];
 
-  for (let char of trimeedExpression) {
+  for (let i = 0; i < trimeedExpression.length; i++) {
+    const char = trimeedExpression[i];
+
     if (char === "(") {
       operatorStack.push(char);
     }
@@ -46,8 +48,15 @@ export function infixToPostfix(expression: string) {
       }
     }
 
-    if (!isNaN(Number(char))) {
-      result.push(char);
+    if (isNumber(char)) {
+      const lastChar = trimeedExpression[i - 1];
+
+      if (isNumber(lastChar)) {
+        const combined = result.pop() + char;
+        result.push(combined);
+      } else {
+        result.push(char);
+      }
     }
   }
 
@@ -59,5 +68,9 @@ export function infixToPostfix(expression: string) {
     result.push(operator);
   }
 
-  return result.join("");
+  return result.join(",");
+}
+
+function isNumber(value: string) {
+  return !isNaN(Number(value));
 }
