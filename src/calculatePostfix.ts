@@ -1,7 +1,7 @@
 export function calculatePostfix(postfix: string) {
   const stack: number[] = [];
 
-  for (let char of postfix) {
+  for (let char of postfix.split(",")) {
     if (isNaN(Number(char))) {
       const firstPopStack = stack.pop();
       const secondPopStack = stack.pop();
