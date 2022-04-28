@@ -23,7 +23,6 @@ export function infixToPostfix(expression: string) {
       }
     }
 
-    // 지금부터는 + - * /
     if (char === "*" || char === "/") {
       const lastOperator = operatorStack[operatorStack.length - 1];
 
@@ -48,10 +47,9 @@ export function infixToPostfix(expression: string) {
       }
     }
 
-    if (isNumber(char)) {
+    if (isNumber(char) || trimeedExpression[i] === ".") {
       const lastChar = trimeedExpression[i - 1];
-
-      if (isNumber(lastChar)) {
+      if (isNumber(lastChar) || lastChar === ".") {
         const combined = result.pop() + char;
         result.push(combined);
       } else {
@@ -74,3 +72,7 @@ export function infixToPostfix(expression: string) {
 function isNumber(value: string) {
   return !isNaN(Number(value));
 }
+
+console.log(
+  infixToPostfix("1 / 32.5 + 167 * (3498 - 1155) * -721 * (4885 - 1) / 0.5")
+);
