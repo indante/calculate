@@ -7,6 +7,30 @@ export function infixToPostfix(expression: string) {
   for (let i = 0; i < trimeedExpression.length; i++) {
     const char = trimeedExpression[i];
 
+    if (char === "-" && !isNumber(trimeedExpression[i - 1])) {
+      result.push("negative");
+    } else if (char === "*" || char === "/") {
+      const lastOperator = operatorStack[operatorStack.length - 1];
+
+      if (lastOperator === "*" || lastOperator === "/") {
+        operatorStack.pop();
+        result.push(lastOperator);
+        operatorStack.push(char);
+      } else {
+        operatorStack.push(char);
+      }
+    } else if (char === "+" || char === "-") {
+      const lastOperator = operatorStack[operatorStack.length - 1];
+
+      if (lastOperator === "*" || lastOperator === "/") {
+        operatorStack.pop();
+        result.push(lastOperator);
+        operatorStack.push(char);
+      } else {
+        operatorStack.push(char);
+      }
+    }
+
     if (char === "(") {
       operatorStack.push(char);
     }
@@ -23,35 +47,17 @@ export function infixToPostfix(expression: string) {
       }
     }
 
-    if (char === "*" || char === "/") {
-      const lastOperator = operatorStack[operatorStack.length - 1];
-
-      if (lastOperator === "*" || lastOperator === "/") {
-        operatorStack.pop();
-        result.push(lastOperator);
-        operatorStack.push(char);
-      } else {
-        operatorStack.push(char);
-      }
-    }
-
-    if (char === "+" || char === "-") {
-      const lastOperator = operatorStack[operatorStack.length - 1];
-
-      if (lastOperator === "*" || lastOperator === "/") {
-        operatorStack.pop();
-        result.push(lastOperator);
-        operatorStack.push(char);
-      } else {
-        operatorStack.push(char);
-      }
-    }
-
     if (isNumber(char) || trimeedExpression[i] === ".") {
       const lastChar = trimeedExpression[i - 1];
-      if (isNumber(lastChar) || lastChar === ".") {
-        const combined = result.pop() + char;
-        result.push(combined);
+      const isNegative = result[result.length - 1] === "negative";
+      if (isNumber(lastChar) || lastChar === "." || isNegative) {
+        if (isNegative) {
+          result.pop();
+          result.push(`-${char}`);
+        } else {
+          const combined = result.pop() + char;
+          result.push(combined);
+        }
       } else {
         result.push(char);
       }
@@ -72,7 +78,3 @@ export function infixToPostfix(expression: string) {
 function isNumber(value: string) {
   return !isNaN(Number(value));
 }
-
-console.log(
-  infixToPostfix("1 / 32.5 + 167 * (3498 - 1155) * -721 * (4885 - 1) / 0.5")
-);
