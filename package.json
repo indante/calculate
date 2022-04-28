@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "jest",
+    "test-watch": "jest --watch",
     "start": "tsc-watch --onSuccess \"node app.js\" "
   },
   "keywords": [],

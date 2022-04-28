@@ -1,4 +1,4 @@
-import { infixToPostfix } from "./postfix";
+import { infixToPostfix } from "./infixToPostfix";
 
 describe("infixToPostfix", () => {
   it("괄호 없는 경우", () => {
