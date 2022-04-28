@@ -1,3 +1,9 @@
+import { calculatePostfix } from "./calculatePostfix";
+import { infixToPostfix } from "./infixToPostfix";
+
 export function evaluate(expression: string): number {
-  return 0;
+  const postfix = infixToPostfix(expression);
+  const result = calculatePostfix(postfix);
+
+  return result;
 }
